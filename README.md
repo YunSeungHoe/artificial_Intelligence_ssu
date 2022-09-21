@@ -4,7 +4,7 @@
 + Languages<br>
   <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/><br>
 + 참고 : 튜링 데스트에서 딥러닝까지 인공지능/이건명/생능출판사/2019/제1판2쇄/지정도서<br>
-<img src="./images/Book.jpg" width="40%" height="40%"><br>
+<img src="./images/Book.jpg" width="20%" height="20%"><br>
 ------
 ## <b> project 1 </b>
 <b> Q. 지능적인 요소가 아직은 없지만 인공지능 기술이 활용되면 서비스 품질이나 기계의 성능이 좋아질 것 같은 사례를 찾아보고, 구체적으로 어떤 인공지능 기술을 활용해야 할지 정리해 보시오.</b><br>
