@@ -1,5 +1,15 @@
 import queue
 
+numlist =[1, 2, 3, 4, 5, 6, 7, 8, 0]
+
+def findindex(list):
+  global numlist
+  indexnum = []
+  for i in numlist:
+    indexnum.append(list.index(i))
+  return indexnum
+
+
 # 상태를 나타내는 클래스, f(n) 값을 저장한다. 
 class State:
   def __init__(self, board, goal, moves=0):
@@ -34,7 +44,10 @@ class State:
   # 휴리스틱 함수 값인 h(n)을 계산하여 반환한다. 
   # 오른쪽에 있는 수와의 차이가 -1이 아닌 노드의 개수
   def h(self):
-    return sum([1 if (self.board[i] - self.board[i+1]) != -1 else 0 for i in range(8)])
+    nlist = findindex(goal)
+    # print(nlist)
+    return sum([1 if (self.board[nlist[i]] - self.board[nlist[i+1]]) != -1 else 0 for i in range(8)])
+    # return sum([1 if (self.board[nlist[i]] - self.board[nlist[i+1]]) != -1 else 0 for i in range(8)])
 
   # 시작 노드로부터의 경로를 반환한다. 
   def g(self):
@@ -61,14 +74,21 @@ class State:
     "------------------"
 
 # 초기 상태
-puzzle = [1, 2, 3, 
-          4, 0, 6, 
-          7, 5, 8]
-
+# puzzle = [1, 2, 3, 
+#           4, 0, 6, 
+#           7, 5, 8]
+puzzle = [2, 8, 3, 
+          1, 6, 4,
+          7, 0, 5]
 # 목표 상태
 goal = [1, 2, 3, 
-        4, 5, 6, 
-        7, 8, 0]
+        8, 0, 4, 
+        7, 6, 5]
+# goal = [1, 2, 3, 
+#         4, 5, 6, 
+#         7, 8, 0]
+
+# numlist = findindex(goal)
 
 # open 리스트는 우선순위 큐로 생성한다. 
 open_queue = queue.PriorityQueue()
