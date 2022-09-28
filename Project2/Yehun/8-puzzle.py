@@ -42,12 +42,10 @@ class State:
     return self.h()+self.g()
 
   # 휴리스틱 함수 값인 h(n)을 계산하여 반환한다. 
-  # 오른쪽에 있는 수와의 차이가 -1이 아닌 노드의 개수
+  # 다음 칸에 있는 숫자와의 차이가 -1이 아닌 노드의 개수
   def h(self):
     nlist = findindex(goal)
-    # print(nlist)
     return sum([1 if (self.board[nlist[i]] - self.board[nlist[i+1]]) != -1 else 0 for i in range(8)])
-    # return sum([1 if (self.board[nlist[i]] - self.board[nlist[i+1]]) != -1 else 0 for i in range(8)])
 
   # 시작 노드로부터의 경로를 반환한다. 
   def g(self):
