@@ -34,7 +34,7 @@ class State:
   # 휴리스틱 함수 값인 h(n)을 계산하여 반환한다. 
   # 현재 제 위치에 있지 않은 타일의 개수를 리스트 함축으로 계산한다. 
   def h(self):
-    return sum([1 if self.board[i] != self.goal[i] else 0 for i in range(8)])
+    return sum([1 if self.board[i] != self.goal[i] else -1 for i in range(8)])
 
   # 시작 노드로부터의 경로를 반환한다. 
   def g(self):
