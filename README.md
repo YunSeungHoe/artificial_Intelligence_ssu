@@ -1,4 +1,4 @@
-ls# <b>Artificial_Intelligence_ssu</b>
+# <b>Artificial_Intelligence_ssu</b>
 + 인공지능 팀프로젝트 8조<br>
 + 팀원 : [김예훈](https://github.com/gnsdp99), [윤승회](https://github.com/YunSeungHoe), [차영원](https://github.com/YoungwonCha)<br>
 + Languages<br>
