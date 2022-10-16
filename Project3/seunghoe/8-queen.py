@@ -52,6 +52,22 @@ def mutate(c):
             c.genes[i] = [i, (c.genes[i][1] + 1)%8]         # + 1 하는 방법
             # c.genes[i] = [i, random.randint(0, SIZE-1)]   # 랜덤하게 하는 방법
 
+# 결과를 출력하는 용도
+def print_result(gene):
+    plist = []
+    for j in range(SIZE):
+        for i in range(SIZE):
+            if [j, i] == gene[j]: plist.append('Q')
+            else: plist.append(' ')
+    print("┌───┬───┬───┬───┬───┬───┬───┬───┐")
+    for i in range(SIZE):
+        print("│ " + str(plist[i*SIZE]) + " │ " + str(plist[i*SIZE+1]) + 
+             " │ " + str(plist[i*SIZE+2]) + " │ " + str(plist[i*SIZE+3]) +
+             " │ " + str(plist[i*SIZE+4]) + " │ " + str(plist[i*SIZE+5]) +
+             " │ " + str(plist[i*SIZE+6]) + " │ " + str(plist[i*SIZE+7]) + " │")
+        if i < SIZE-1: print("├───┼───┼───┼───┼───┼───┼───┼───┤")
+    print("└───┴───┴───┴───┴───┴───┴───┴───┘")
+    
 # 메인 프로그램
 def main():
     population = []
@@ -89,6 +105,8 @@ def main():
         print("세대 번호=", count)
         print_p(population)
         count += 1
+        
+    print_result(population[0].genes)
 
 if __name__ == '__main__':
     main()
