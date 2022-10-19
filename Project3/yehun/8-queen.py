@@ -4,7 +4,7 @@ import random
 
 POPULATION_SIZE = 8
 MUTATION_RATE = 0.1
-SIZE = 8 # 하나의 염색체에서 유전자의 개수 ()
+SIZE = 8 # 하나의 염색체에서 유전자의 개수
 
 class Chromosome:
     # 각 퀸은 각 열에 하나만 존재한다는 가정하에 각 열에서의 행 인덱스를 유전자로 가진다.
@@ -17,8 +17,7 @@ class Chromosome:
                 self.genes.append(random.randint(0, SIZE-1)) # 퀸이 존재할 행 인덱스(0 ~ SIZE-1)중 하나를 리턴한다. 
                 i += 1
     
-    def cal_fitness(self): # 적합도 계산 함수
-        # 서로 공격하는 퀸 쌍의 개수를 이용한다.
+    def cal_fitness(self): # 적합도 계산 함수 (서로 공격하지 않는 쌍이 많을수록 적합도가 높다.)
         # 첫 번째 퀸(첫 번째 열)부터 시작해 모든 오른쪽에 있는 퀸과 공격이 가능한지 판단한다.
         # 현재 퀸의 행 인덱스가 k일 때 오른쪽으로 n번째에 있는 열에서 퀸이 k, k+n, k-n 행 인덱스에 존재하면 공격 가능하다.
         self.fitness = 0
