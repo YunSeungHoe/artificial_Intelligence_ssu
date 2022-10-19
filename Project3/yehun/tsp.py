@@ -1,6 +1,6 @@
 import random
 
-POPULATION_SIZE = 10
+POPULATION_SIZE = 100
 MUTATION_RATE = 0.1
 SIZE = 9 # 하나의 염색체에서 유전자의 개수
 # 0: 서울, 1: 인천, 2: 대전, 3: 춘천, 4: 강릉, 5: 대구, 6: 울산, 7: 부산, 8: 광주
@@ -30,13 +30,13 @@ class Chromosome:
                 self.genes.append(num)
                 i += 1
     
-    def cal_fitness(self, ): # 적합도 계산 함수 (적합도는 ㅇㄹ)
+    def cal_fitness(self): # 적합도 계산 함수 
         self.fitness = 0
         d = DISTANCE[0][self.genes[1]] # 서울~첫 도시 거리를 더한다.
         for idx in range(1, SIZE-1):
             d += DISTANCE[self.genes[idx]][self.genes[idx+1]] # 서울을 제외한 각 도시 사이의 거리를 더한다.
         d += DISTANCE[self.genes[-1]][0] # 마지막 도시~서울 거리를 더한다.
-        self.fitness = d
+        self.fitness = (1 / d) * 100 # 거리가 짧을수록 적합도가 높아야 한다.
         return self.fitness
     
     def __str__(self):
@@ -52,7 +52,7 @@ def print_p(pop):
     
 def select(pop):
     max_value = sum([c.cal_fitness() for c in pop]) # 전체 개체의 적합도의 합
-    pick = random.uniform(0, max_value) # 0~max_value 사이의 랜덤 실수를 리턴한다.
+    pick = random.uniform(0, max_value) # 0~max_value 사이의 랜덤 실수를 리턴
     current = 0
     
     # 룰렛휠에서 어떤 조각에 속하는지를 알아내는 루프
@@ -118,7 +118,7 @@ while population[0].cal_fitness()  : # sorting을 하기 때문에 [0]을 비교
     for c in population: mutate(c)
 
     # 출력을 위한 정렬
-    population.sort(key=lambda x: x.cal_fitness()) 
+    population.sort(key=lambda x: x.cal_fitness(), reverse=True) 
     print("세대 번호=", count)
     print_p(population)
     count += 1

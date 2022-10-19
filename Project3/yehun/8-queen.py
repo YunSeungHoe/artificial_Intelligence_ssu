@@ -2,7 +2,7 @@
 # 하나의 퀸을 기준으로 가로, 세로, 대각선에 다른 퀸이 존재하면 안된다.
 import random
 
-POPULATION_SIZE = 8
+POPULATION_SIZE = 100
 MUTATION_RATE = 0.1
 SIZE = 8 # 하나의 염색체에서 유전자의 개수
 
