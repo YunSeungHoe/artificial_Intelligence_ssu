@@ -24,7 +24,7 @@ class Chromosome:
         value = 28 # 모든 퀸들이 서로 공격하지 않을 때 쌍의 개수
         h = 0 # 서로 공격 가능한 퀸 쌍의 개수 
         for i in range(SIZE-1): # i는 현재 기준이 되는 퀸의 열
-            for j in range(i, SIZE):
+            for j in range(i+1, SIZE):
                 n = j - i # 기준 퀸으로부터 몇 열 떨어져 있는가
                 if (self.genes[j] == self.genes[i]) or (self.genes[j] == self.genes[i]+n) or (self.genes[j] == self.genes[i]-n):
                     h += 1
