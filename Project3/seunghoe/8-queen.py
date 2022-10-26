@@ -88,9 +88,9 @@ def main():
         new_pop = []
 
         for i in range(POPULATION_SIZE // 2):
-            c1, c2 = crossover(population);
-            new_pop.append(Chromosome(c1));
-            new_pop.append(Chromosome(c2));
+            c1, c2 = crossover(population)
+            new_pop.append(Chromosome(c1))
+            new_pop.append(Chromosome(c2))
             population[1].fitness = 0
             population[0].fitness = 0
             population.sort(key=lambda x: x.fitness, reverse=True) # 사용한 부모 유전자를 사용하지 않도록 하기위해 수행한다.

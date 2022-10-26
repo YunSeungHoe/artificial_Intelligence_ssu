@@ -119,9 +119,9 @@ def main():
 
     #     # 선택과 교차 연산
         for i in range(POPULATION_SIZE // 2):
-            c1, c2 = crossover(population);
-            new_pop.append(Chromosome(c1));
-            new_pop.append(Chromosome(c2));
+            c1, c2 = crossover(population)
+            new_pop.append(Chromosome(c1))
+            new_pop.append(Chromosome(c2))
             population[1].fitness = 5000
             population[0].fitness = 5000
             population.sort(key=lambda x: x.fitness, reverse=False) 
