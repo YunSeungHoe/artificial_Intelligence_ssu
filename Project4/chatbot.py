@@ -1,68 +1,56 @@
-# Importing modules
-import re
-from nltk.corpus import wordnet
-# nltk.download('wordnet')
-# nltk.download('omw-1.4')
-from nltk.corpus import wordnet # lexical database thaht defines semantical relationships between words
+import pandas as pd
+import re, time
 
-# Building a list of Keywords
-list_words=['hello','timings']
-list_syn={}
-for word in list_words:
-    synonyms=[]
-    for syn in wordnet.synsets(word):
-        for lem in syn.lemmas():
-            # Remove any special characters from synonym strings
-            lem_name = re.sub('[^a-zA-Z0-9 \n\.]', ' ', lem.name())
-            synonyms.append(lem_name)
-    list_syn[word]=set(synonyms)
-print (list_syn)
+WORD_COL = 0
+RULE_COL = 1
+RESP_COL = 2
+RECIPE_START_ROW = 1 
+RECIPE_END_ROW = 24
 
-# Building dictionary of Intents & Keywords
-keywords={}
-keywords_dict={}
-# Defining a new key in the keywords dictionary
-keywords['greet']=[]
-# Populating the values in the keywords dictionary with synonyms of keywords formatted with RegEx metacharacters
-for synonym in list(list_syn['hello']):
-    keywords['greet'].append('.*\\b'+synonym+'\\b.*')
 
-# Defining a new key in the keywords dictionary
-keywords['timings']=[]
-# Populating the values in the keywords dictionary with synonyms of keywords formatted with RegEx metacharacters
-for synonym in list(list_syn['timings']):
-    keywords['timings'].append('.*\\b'+synonym+'\\b.*')
-for intent, keys in keywords.items():
-    # Joining the values in the keywords dictionary with the OR (|) operator updating them in keywords_dict dictionary
-    keywords_dict[intent]=re.compile('|'.join(keys))
-print (keywords_dict)
+def rule_check(com, rule):
+    for word in rule:
+        for j in range(len(word)):
+            for i in range(j, len(com), len(word)):
+                command_split = "".join(com[i:i+len(word)])
+                if word == command_split:
+                    # print("command = {}, rule = {}".format(command_split, word))
+                    return True
+    return False
 
-# Building a dictionary of responses
-responses={
-    'greet':'Hello! How can I help you?',
-    'timings':'We are open from 9AM to 5PM, Monday to Friday. We are closed on weekends and public holidays.',
-    'fallback':'I dont quite understand. Could you repeat that?',
-}
+def keyword_check(df, com, start_len, end_len):
+    for i in range(start_len, end_len):
+        compare_word = df.values[i][WORD_COL]
+        if re.search(compare_word, "".join(com)) != None:
+            return True, df.values[i][RESP_COL]
+    return False, None
 
-print ("Welcome to MyBank. How may I help you?")
-# While loop to run the chatbot indefinetely
-while (True):
-    # Takes the user input and converts all characters to lowercase
-    user_input = input().lower()
-    # Defining the Chatbot's exit condition
-    if user_input == 'quit':
-        print ("Thank you for visiting.")
-        break
-    matched_intent = None
-    for intent,pattern in keywords_dict.items():
-        # Using the regular expression search function to look for keywords in user input
-        if re.search(pattern, user_input):
-            # if a keyword matches, select the corresponding intent from the keywords_dict dictionary
-            matched_intent=intent
-    # The fallback intent is selected by default
-    key='fallback'
-    if matched_intent in responses:
-        # If a keyword matches, the fallback intent is replaced by the matched intent as the key for the responses dictionary
-        key = matched_intent
-    # The chatbot prints the response that matches the selected intent
-    print (responses[key])
+# pandas 엑셀의 값을 넣으면 df에 저장됨.
+df = pd.read_excel("bigdata.xlsx")
+
+##################################################
+# 룰을 리스트에 저장 
+# 지금은 레시피와 관련된 룰만 하지만 
+# 추후, 확장의 가능성을 남겨둠
+##################################################
+recipe_rule = list(df.values[RECIPE_START_ROW][RULE_COL].split())
+
+##################################################
+# 입력을 받아 공백을 제거 
+# 한글을 처리하기 위해서는 공백을 제거할 필요가 있음
+##################################################
+# command = list("당근전 요리 하는방법 알려줘".split())
+# command = list("세상에서 제일 맛있는 당근전 요리 하는방법 알려줘".split())
+command = list(input().split())
+command_non_space = list("".join(command))
+
+row_len = df.count()[0] # 행의 갯수 출력
+if rule_check(command_non_space, recipe_rule):
+    # 처음부터 음식단어가 들어가는 경우
+    # 중간에 움식단어가 들어가는 경우
+    keyword_flag, response = keyword_check(df, command_non_space, RECIPE_START_ROW, RECIPE_END_ROW)
+    if keyword_flag: 
+        print(response)
+else: 
+    # 일치하는 규칙이 없을 때!
+    print("아직은 레시피 기능밖에 없네요 ㅠㅠ")
