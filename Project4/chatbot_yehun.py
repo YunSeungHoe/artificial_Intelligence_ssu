@@ -5,7 +5,7 @@ WORD_COL = 0
 RULE_COL = 1
 RESP_COL = 2
 RECIPE_START_ROW = 1 
-RECIPE_END_ROW = 24
+RECIPE_END_ROW = 13
 
 def rule_check(com, rule):
     for word in rule:
@@ -17,15 +17,24 @@ def rule_check(com, rule):
                     return True
     return False
 
-def keyword_check(df, com, start_len, end_len):
+def keyword_check(df, com, start_len, end_len): ### 동일한 이름이 들어간 음식은 구분이 안된다.
+    matched_len = 0
+    food = ""
     for i in range(start_len, end_len):
         compare_word = df.values[i][WORD_COL]
-        if re.search(compare_word, "".join(com)) != None:
-            return True, df.values[i][RESP_COL]
-    return False, None
+        search = re.search(compare_word, "".join(com))
+        if search != None:
+            span = search.span()
+            if matched_len < span[1] - span[0]:
+                matched_len = span[1] - span[0]
+                food = df.values[i][RESP_COL]
+    if food:
+        return True, food
+    else:
+        return False, None
 
 # pandas 엑셀의 값을 넣으면 df에 저장됨.
-df = pd.read_excel("bigdata.xlsx")
+df = pd.read_excel("찌개.xlsx")
 
 ##################################################
 # 룰을 리스트에 저장 
