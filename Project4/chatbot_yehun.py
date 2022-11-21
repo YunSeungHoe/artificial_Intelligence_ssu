@@ -17,7 +17,7 @@ def rule_check(com, rule):
                     return True
     return False
 
-def keyword_check(df, com, start_len, end_len): ### 동일한 이름이 들어간 음식은 구분이 안된다.
+def keyword_check(df, com, start_len, end_len): ### 동일한 이름이 들어간 음식을 구분하도록 ex)김치찌개, 참치 김치찌개
     matched_len = 0
     food = ""
     for i in range(start_len, end_len):
@@ -34,7 +34,7 @@ def keyword_check(df, com, start_len, end_len): ### 동일한 이름이 들어�
         return False, None
 
 # pandas 엑셀의 값을 넣으면 df에 저장됨.
-df = pd.read_excel("찌개.xlsx")
+df = pd.read_excel("stew.xlsx")
 
 ##################################################
 # 룰을 리스트에 저장 
