@@ -19,7 +19,6 @@ def rule_check(com, rule):
 
 def keyword_check(df, com, start_len, end_len): ### 동일한 이름이 들어간 음식을 구분하도록 ex)김치찌개, 참치 김치찌개
     matched_len = 0
-    food = ""
     for i in range(start_len, end_len):
         compare_word = df.values[i][WORD_COL]
         search = re.search(compare_word, "".join(com))
@@ -27,9 +26,9 @@ def keyword_check(df, com, start_len, end_len): ### 동일한 이름이 들어�
             span = search.span()
             if matched_len < span[1] - span[0]:
                 matched_len = span[1] - span[0]
-                food = df.values[i][RESP_COL]
-    if food:
-        return True, food
+                respon = df.values[i][RESP_COL]
+    if respon:
+        return True, respon
     else:
         return False, None
 

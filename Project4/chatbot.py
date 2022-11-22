@@ -5,7 +5,7 @@ WORD_COL = 0
 RULE_COL = 1
 RESP_COL = 2
 RECIPE_START_ROW = 1 
-RECIPE_END_ROW = 24
+RECIPE_END_ROW = 12
 
 
 def rule_check(com, rule):
@@ -26,7 +26,7 @@ def keyword_check(df, com, start_len, end_len):
     return False, None
 
 # pandas 엑셀의 값을 넣으면 df에 저장됨.
-df = pd.read_excel("bigdata.xlsx")
+df = pd.read_excel("stew.xlsx")
 
 ##################################################
 # 룰을 리스트에 저장 
@@ -34,7 +34,8 @@ df = pd.read_excel("bigdata.xlsx")
 # 추후, 확장의 가능성을 남겨둠
 ##################################################
 recipe_rule = list(df.values[RECIPE_START_ROW][RULE_COL].split())
-
+recipe_rule1 = list(df.values[13][RULE_COL].split())
+print(recipe_rule1)
 ##################################################
 # 입력을 받아 공백을 제거 
 # 한글을 처리하기 위해서는 공백을 제거할 필요가 있음
@@ -43,11 +44,15 @@ recipe_rule = list(df.values[RECIPE_START_ROW][RULE_COL].split())
 # command = list("세상에서 제일 맛있는 당근전 요리 하는방법 알려줘".split())
 command = list(input().split())
 command_non_space = list("".join(command))
-
+print(command_non_space)
 row_len = df.count()[0] # 행의 갯수 출력
 if rule_check(command_non_space, recipe_rule):
     # 처음부터 음식단어가 들어가는 경우
     # 중간에 움식단어가 들어가는 경우
+    keyword_flag, response = keyword_check(df, command_non_space, RECIPE_START_ROW, RECIPE_END_ROW)
+    if keyword_flag: 
+        print(response)
+elif rule_check(command_non_space, recipe_rule1):
     keyword_flag, response = keyword_check(df, command_non_space, RECIPE_START_ROW, RECIPE_END_ROW)
     if keyword_flag: 
         print(response)
