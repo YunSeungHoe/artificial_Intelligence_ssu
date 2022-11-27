@@ -5,12 +5,12 @@ WORD_COL = 0
 RULE_COL = 1
 RESP_COL = 2
 
-RECIPE_START_ROW = 1 
-RECIPE_END_ROW = 8
-INGREDIENT_START_ROW = 1
+RECIPE_START_ROW = 0 
+RECIPE_END_ROW = 14
+INGREDIENT_START_ROW = 0
 INGREDIENT_END_ROW = 10
-TYPE_START_ROW = 1
-TYPE_END_ROW = 7
+TYPE_START_ROW = 0
+TYPE_END_ROW = 6
 
 # 1. 사용자가 기능을 선택한다.
 # 2. 해당 기능에 해당하는 키워드를 입력하면 답변한다.
@@ -35,7 +35,8 @@ def keyword_check(df, com, start_len, end_len): ### 동일한 이름이 들어�
 df_recipe = pd.read_excel("stew.xlsx")
 df_ingredient = ""
 df_type = pd.read_excel("type.xlsx")
-print(df_type.values[1])
+print(df_recipe.values[13])
+print(df_type.values[6])
 ##################################################
 # 룰을 리스트에 저장 
 # 지금은 레시피와 관련된 룰만 하지만 
