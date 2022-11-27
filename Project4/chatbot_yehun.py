@@ -58,6 +58,7 @@ while(True): ### 종료 전까지 무한 반복
     row_len = df.count()[0] # 행의 갯수 출력
     print("챗봇: ", end="")
     if rule_check(command_non_space, recipe_rule):
+        # 기능 1. 음식 이름으로 레시피 알려주기
         # 처음부터 음식단어가 들어가는 경우
         # 중간에 움식단어가 들어가는 경우
         keyword_flag, response = keyword_check(df, command_non_space, RECIPE_START_ROW, RECIPE_END_ROW)
@@ -66,6 +67,9 @@ while(True): ### 종료 전까지 무한 반복
         else: ### 일치하는 요리가 없을 때
             print("아직 해당 요리의 레시피는 없네요 ㅠㅠ\n")
         
+        # 기능 3. 음식 종류로 음식 추천하기
+        
+
     else: 
         # 일치하는 규칙이 없을 때!
         print("아직은 레시피 기능밖에 없네요 ㅠㅠ\n")
