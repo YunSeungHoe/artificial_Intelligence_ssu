@@ -6,13 +6,13 @@ WORD_COL = 0
 RULE_COL = 1
 RESP_COL = 2
 RECIPE_START_ROW = 0
-RECIPE_END_ROW = 13
+RECIPE_END_ROW = 692
 
-INGREDIENT_START_ROW = 13
-INGREDIENT_END_ROW = 44
+INGREDIENT_START_ROW = 692
+INGREDIENT_END_ROW = 723
 
-TYPE_START_ROW = 44
-TYPE_END_ROW = 51
+TYPE_START_ROW = 723
+TYPE_END_ROW = 730
 
 def rule_check(com, rule):
     for word in rule:
@@ -25,14 +25,13 @@ def rule_check(com, rule):
     return False
 
 def keyword_check1(df, com, start_len, end_len): ### 동일한 이름이 들어간 음식을 구분하도록 ex)김치찌개, 참치 김치찌개
-    matched_len = 0
     for i in range(start_len, end_len):
         compare_word = df.values[i][WORD_COL]
         search = re.search(compare_word, "".join(com))
         if search != None:
             span = search.span()
             search_len = span[1] - span[0]
-            if (matched_len < search_len) and ():
+            if matched_len < search_len:
                 matched_len = search_len
                 respon = df.values[i][RESP_COL]
     if respon:
@@ -78,7 +77,7 @@ def keyword_check3(df, com, start_len, end_len):
     return False, None
 
 # pandas 엑셀의 값을 넣으면 df에 저장됨.
-df = pd.read_excel("stew.xlsx")
+df = pd.read_excel("food.xlsx")
 ##################################################
 # 룰을 리스트에 저장 
 # 지금은 레시피와 관련된 룰만 하지만 
@@ -110,21 +109,27 @@ while(True): ### 종료 전까지 무한 반복
         if keyword_flag:
             print(", ".join(response), "어떤가요? \n")
             is_done = 1
+        else:
+            pass
         
     if not is_done:
         if rule_check(command_non_space, recipe_rule1):
             # 처음부터 음식단어가 들어가는 경우
-            # 중간에 움식단어가 들어가는 경우
+            # 중간에 움식단어가 들어가는 경우 
             keyword_flag, response = keyword_check1(df, command_non_space, RECIPE_START_ROW, RECIPE_END_ROW)
             if keyword_flag:
                 print(response+"\n")
                 is_done = 1
-
+            else: 
+                pass
+            
         elif rule_check(command_non_space, recipe_rule2):
             keyword_flag, response = keyword_check2(df, command_non_space, INGREDIENT_START_ROW, INGREDIENT_END_ROW)
             if keyword_flag:
                 print(", ".join(response), "어떤가요? \n")
                 is_done = 1
+            else:
+                pass
             
     if not is_done:
         # 일치하는 규칙이 없을 때!
