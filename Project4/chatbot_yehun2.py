@@ -43,32 +43,37 @@ def keyword_check2(df, com, start_len, end_len):
     recommend = []
     for i in range(start_len, end_len):
         compare_word = df.values[i][WORD_COL]    #김치, 닭, 달걀 ...
-        if re.search(compare_word, "".join(com)) != None:
+        print("".join(com))
+        print(compare_word)
+        if "".join(com) in compare_word != None:
             ingredient = df.values[i][WORD_COL]  ##사용자가 원하는 재료 ex)김치
             for j in range(RECIPE_START_ROW, RECIPE_END_ROW):   #다시 맨위부터 모든 음식이 비교대상이 되어 김치가 들어가는 음식 찾기
                 compare_food = df.values[j][WORD_COL] 
                 if re.search(ingredient, compare_food) != None:   ##김치 글자가 들어가는 음식 있으면 리스트에 추가
                     recommend.append(compare_food)
+                if len(recommend) >= 10:
+                    break
             return True, recommend
     return False, None
 
 def keyword_check3(df, com, start_len, end_len):
     recommend = []
     for i in range(start_len, end_len):
-        compare_word = df.values[i][WORD_COL]    #김치, 닭, 달걀 ...
-        
+        compare_word = df.values[i][WORD_COL]
+        print("".join(com))
         if re.search(compare_word, "".join(com)) != None:
             food_type = df.values[i][WORD_COL]  ##사용자가 원하는 종류 ex) 탕, 찌개
             for j in range(RECIPE_START_ROW, RECIPE_END_ROW):   #다시 맨위부터 모든 음식이 비교대상이 되어 '탕'이 들어가는 음식
                 compare_food = df.values[j][WORD_COL] 
-                if re.search(ingredient, compare_food) != None:   ##'탕' 글자가 들어가는 음식 있으면 리스트에 추가
+                if re.search(food_type, compare_food) != None:   ##'탕' 글자가 들어가는 음식 있으면 리스트에 추가
                     recommend.append(compare_food)
+                if len(recommend) >= 10:
+                    break
             return True, recommend
     return False, None
 
 # pandas 엑셀의 값을 넣으면 df에 저장됨.
 df = pd.read_excel("stew.xlsx")
-
 ##################################################
 # 룰을 리스트에 저장 
 # 지금은 레시피와 관련된 룰만 하지만 
@@ -109,6 +114,7 @@ while(True): ### 종료 전까지 무한 반복
         else: ### 일치하는 요리가 없을 때
             print("해당 재료로 만들 수 있는 음식이 없네요\n")
             
+    
     elif rule_check(command_non_space, recipe_rule3):
         keyword_flag, response = keyword_check3(df, command_non_space, TYPE_START_ROW, TYPE_END_ROW)
         if keyword_flag:
