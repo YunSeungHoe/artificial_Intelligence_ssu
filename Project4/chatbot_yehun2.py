@@ -1,5 +1,6 @@
 import pandas as pd
 import re, time
+import random
 
 WORD_COL = 0
 RULE_COL = 1
@@ -11,7 +12,7 @@ INGREDIENT_START_ROW = 13
 INGREDIENT_END_ROW = 44
 
 TYPE_START_ROW = 44
-TYPE_END_ROW = 45
+TYPE_END_ROW = 51
 
 def rule_check(com, rule):
     for word in rule:
@@ -30,8 +31,9 @@ def keyword_check1(df, com, start_len, end_len): ### 동일한 이름이 들어�
         search = re.search(compare_word, "".join(com))
         if search != None:
             span = search.span()
-            if matched_len < span[1] - span[0]:
-                matched_len = span[1] - span[0]
+            search_len = span[1] - span[0]
+            if (matched_len < search_len) and ():
+                matched_len = search_len
                 respon = df.values[i][RESP_COL]
     if respon:
         return True, respon
@@ -43,9 +45,7 @@ def keyword_check2(df, com, start_len, end_len):
     recommend = []
     for i in range(start_len, end_len):
         compare_word = df.values[i][WORD_COL]    #김치, 닭, 달걀 ...
-        print("".join(com))
-        print(compare_word)
-        if "".join(com) in compare_word != None:
+        if re.search(compare_word, "".join(com)) != None:
             ingredient = df.values[i][WORD_COL]  ##사용자가 원하는 재료 ex)김치
             for j in range(RECIPE_START_ROW, RECIPE_END_ROW):   #다시 맨위부터 모든 음식이 비교대상이 되어 김치가 들어가는 음식 찾기
                 compare_food = df.values[j][WORD_COL] 
@@ -60,15 +60,20 @@ def keyword_check3(df, com, start_len, end_len):
     recommend = []
     for i in range(start_len, end_len):
         compare_word = df.values[i][WORD_COL]
-        print("".join(com))
         if re.search(compare_word, "".join(com)) != None:
             food_type = df.values[i][WORD_COL]  ##사용자가 원하는 종류 ex) 탕, 찌개
-            for j in range(RECIPE_START_ROW, RECIPE_END_ROW):   #다시 맨위부터 모든 음식이 비교대상이 되어 '탕'이 들어가는 음식
-                compare_food = df.values[j][WORD_COL] 
-                if re.search(food_type, compare_food) != None:   ##'탕' 글자가 들어가는 음식 있으면 리스트에 추가
-                    recommend.append(compare_food)
-                if len(recommend) >= 10:
-                    break
+            if compare_word == "아무":
+                num_list = [i for i in range(RECIPE_START_ROW, RECIPE_END_ROW+1)]
+                random_list = random.sample(num_list, 10)
+                for j in random_list:
+                    recommend.append(df.values[j][WORD_COL])
+            else:
+                for j in range(RECIPE_START_ROW, RECIPE_END_ROW):   #다시 맨위부터 모든 음식이 비교대상이 되어 '탕'이 들어가는 음식
+                    compare_food = df.values[j][WORD_COL] 
+                    if re.search(food_type, compare_food) != None:   ##'탕' 글자가 들어가는 음식 있으면 리스트에 추가
+                        recommend.append(compare_food)
+                    if len(recommend) >= 10:
+                        break
             return True, recommend
     return False, None
 
@@ -98,30 +103,29 @@ while(True): ### 종료 전까지 무한 반복
     #print(command_non_space)
     row_len = df.count()[0] # 행의 갯수 출력
     print("챗봇: ", end="")
-    if rule_check(command_non_space, recipe_rule1):
-        # 처음부터 음식단어가 들어가는 경우
-        # 중간에 움식단어가 들어가는 경우
-        keyword_flag, response = keyword_check1(df, command_non_space, RECIPE_START_ROW, RECIPE_END_ROW)
-        if keyword_flag:
-            print(response+"\n")
-        else: ### 일치하는 요리가 없을 때
-            print("아직 해당 요리의 레시피는 없네요\n")
-
-    elif rule_check(command_non_space, recipe_rule2):
-        keyword_flag, response = keyword_check2(df, command_non_space, INGREDIENT_START_ROW, INGREDIENT_END_ROW)
-        if keyword_flag:
-            print(", ".join(response), "어떤가요? \n")
-        else: ### 일치하는 요리가 없을 때
-            print("해당 재료로 만들 수 있는 음식이 없네요\n")
-            
     
-    elif rule_check(command_non_space, recipe_rule3):
+    is_done = 0
+    if rule_check(command_non_space, recipe_rule3):
         keyword_flag, response = keyword_check3(df, command_non_space, TYPE_START_ROW, TYPE_END_ROW)
         if keyword_flag:
             print(", ".join(response), "어떤가요? \n")
-        else: ### 일치하는 요리가 없을 때
-            print("해당 종류의 음식은 아직 없네요\n")
+            is_done = 1
         
-    else: 
+    if not is_done:
+        if rule_check(command_non_space, recipe_rule1):
+            # 처음부터 음식단어가 들어가는 경우
+            # 중간에 움식단어가 들어가는 경우
+            keyword_flag, response = keyword_check1(df, command_non_space, RECIPE_START_ROW, RECIPE_END_ROW)
+            if keyword_flag:
+                print(response+"\n")
+                is_done = 1
+
+        elif rule_check(command_non_space, recipe_rule2):
+            keyword_flag, response = keyword_check2(df, command_non_space, INGREDIENT_START_ROW, INGREDIENT_END_ROW)
+            if keyword_flag:
+                print(", ".join(response), "어떤가요? \n")
+                is_done = 1
+            
+    if not is_done:
         # 일치하는 규칙이 없을 때!
-        print("아직은 해당 기능이 없네요\n")
+        print("죄송해요. 아직은 해당 기능이 없네요...\n")
