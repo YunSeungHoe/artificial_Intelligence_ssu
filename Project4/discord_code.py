@@ -30,6 +30,7 @@ def keyword_check1(df, com, start_len, end_len):
             if matched_len < search_len:
                 matched_len = search_len
                 respon = df.values[i][RESP_COL]
+                print(df.values[i][RESP_COL])
     if respon:
         return True, respon
     else:

@@ -100,7 +100,7 @@ while(True): ### 종료 전까지 무한 반복
         print("이용해 주셔서 감사합니다!")
         break 
     command_non_space = list("".join(command))
-    print(command_non_space)
+	#print(command_non_space)
     row_len = df.count()[0] # 행의 갯수 출력
     print("챗봇: ", end="")
     
