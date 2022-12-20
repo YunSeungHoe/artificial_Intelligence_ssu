@@ -79,7 +79,7 @@ recipe_rule1 = list(df.values[RECIPE_START_ROW][RULE_COL].split())
 recipe_rule2 = list(df.values[INGREDIENT_START_ROW][RULE_COL].split())
 recipe_rule3 = list(df.values[TYPE_START_ROW][RULE_COL].split())
 
-discord_token ='MTA0MTk4MzQ3NTAyNjIzOTU0OA.GNYi4K.EorOHLefv7Lm73f30fnHAWabdfHJiWQ2ubFKqs'
+discord_token ='NULL'
 print("discord bot starting...")
 client = discord.Client(intents=discord.Intents.default())
 
