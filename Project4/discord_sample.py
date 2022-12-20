@@ -2,7 +2,7 @@ import discord
 import os
 import asyncio
 
-discord_token ='MTA0MTk4MzQ3NTAyNjIzOTU0OA.GljjE8.0Kv-LQkYGzG6Lp0Y_WNyMh05Ocp7WioGafv304'
+discord_token ='NULL'
 
 # print(discord_token)
 print("discord bot starting...")
